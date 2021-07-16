@@ -12,7 +12,7 @@ class Layer {
 		vector<double> values_;
 	public:
 		Layer(int num_nodes, string activation);
-		Layer(double values[], string activation);
+		Layer(int num_nodes, double values[], string activation);
 		vector<double> get_values();
 		string get_activation();
 };

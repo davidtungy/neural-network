@@ -26,3 +26,14 @@ TEST_F(LayerTest, RandomNodeValueInitialization) {
 		EXPECT_LE(values[i], 1);
 	}
 }
+
+TEST_F(LayerTest, FixedNodeValueInitialization) {
+	int num_nodes = 7;
+	double vals[] = {1, 3, 5, 1, 35, 0.3, -135};
+	Layer l(num_nodes, vals, "linear");
+	vector<double> values = l.get_values();
+	EXPECT_EQ(values.size(), num_nodes);
+	for (int i = 0; i < num_nodes; i++) {
+		EXPECT_EQ(values[i], vals[i]);
+	}
+}

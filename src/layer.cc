@@ -10,9 +10,10 @@ Layer::Layer(int num_nodes, string activation): num_nodes_(num_nodes), activatio
 	}
 }
 
-Layer::Layer(double values[], string activation): activation_(activation) {
-	num_nodes_ = sizeof(values)/sizeof(values[0]);
-	values_ = vector<double>(values, values + num_nodes_);
+Layer::Layer(int num_nodes, double values[], string activation): num_nodes_(num_nodes), activation_(activation) {
+	for (int i = 0; i < num_nodes_; i++) {
+		values_.push_back(values[i]);
+	}
 }
 
 vector<double> Layer::get_values() {
