@@ -1,25 +1,26 @@
 #ifndef Layer_H
 #define Layer_H
 
+
 #include <cstdlib>
 #include <iostream>
-#include <string.h>
 #include <vector>
+#include <string>
 
 #include "neuron.h"
 
 using namespace std;
 
 class Layer {
-	private:
-		int size_;
-		string activation_;
-		vector<Neuron*> weights_;
-	public:
-		Layer(int num_nodes, string activation);
-		Layer(int num_nodes, vector<double>, string activation);
-		vector<Neuron*> get_weights();
-		string get_activation();
+  private:
+  	double bias;
+  	Neuron* neurons;
+    string activation;
+    int size;
+  public:
+  	Layer(int size, int size_previous_layer, string activation);
+    double* forward(double input[]);
+    ~Layer();
 };
 
 #endif

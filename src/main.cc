@@ -2,23 +2,22 @@
 #include <stdio.h>
 #include <string.h>
 #include <vector>
+#include <time.h>
 #include "neuron.h"
 #include "layer.h"
-#include "neural_network.h"
 
 using namespace std;
 
 int main(int argc, char* argv[]) {
-	Neuron* n= new Neuron(10.0);
-	cout << n->weight << endl;
+	srand (time(NULL));
+	double input[5] = {1, 1, 2, 1, 1};
 
-	Layer l(10, "sigmoid");
-	vector<Neuron*> weights = l.get_weights();
-	for (int i = 0; i < weights.size(); i++) {
-		cout << weights[i]->weight << endl;
+	// TO DO: add to test
+	Layer* l = new Layer(5, 5, "sigmoid");
+	double* res = l->forward(input);
+	cout << "RESULT: " << endl;
+	for (int i = 0; i < 5; i++) {
+		cout << res[i] << endl;
 	}
-
-	NeuralNetwork nn();
-	cout << "Dummy neural network" << endl;
-
+	free(res);
 }

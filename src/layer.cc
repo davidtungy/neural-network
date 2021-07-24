@@ -1,30 +1,29 @@
 #include "layer.h"
+
+
 #include <iostream>
+#include <string>
 
 #include "neuron.h"
 
+using namespace std;
 
-Layer::Layer(int num_nodes, string activation): size_(num_nodes + 1), activation_(activation) {
-	// initialize node weights to a random value between 0.0 and 1.0
-	// allocate one extra layer for bias term
-	for (int i = 0; i < size_; i++) {
-		double random = ((double) rand()) / RAND_MAX;
-		Neuron* n = new Neuron(random);
-		weights_.push_back(n);
+
+Layer::Layer(int size, int size_previous_layer, string activation): size(size), activation(activation){
+	this->neurons = (Neuron * ) (malloc(size * sizeof(Neuron)));
+	for(int i = 0; i < size; i++) {
+		new (&(this->neurons[i])) Neuron(size_previous_layer);
 	}
 }
 
-Layer::Layer(int num_nodes, vector<double> weights, string activation): size_(num_nodes), activation_(activation) {
-	for (int i = 0; i < size_; i++) {
-		Neuron* n = new Neuron(weights[i]);
-		weights_.push_back(n);
+double* Layer::forward(double input[]) {
+	double* result = new double[this->size];
+	for (int i = 0; i < this->size; i++) {
+		result[i] = this->neurons[i].weighted_sum(input);
 	}
+	return result;
 }
 
-vector<Neuron*> Layer::get_weights() {
-	return weights_;
-}
-
-string Layer::get_activation() {
-	return activation_;
+Layer::~Layer() {
+	free(neurons);
 }

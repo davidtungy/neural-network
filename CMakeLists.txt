@@ -18,13 +18,13 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googletest)
 
 include_directories(include)
-add_library(nn_lib src/neural_network.cc src/layer.cc src/neuron.cc)
+add_library(nn_lib src/neuron.cc src/layer.cc)
 
 add_executable(main src/main.cc)
 target_link_libraries(main nn_lib)
 
 
-add_executable(layer_test tests/layer_test.cc)
-target_link_libraries(layer_test nn_lib gtest_main gmock_main)
+add_executable(neuron_test tests/neuron_test.cc)
+target_link_libraries(neuron_test nn_lib gtest_main gmock_main)
 
-gtest_discover_tests(layer_test WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/tests)
+gtest_discover_tests(neuron_test WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/tests)

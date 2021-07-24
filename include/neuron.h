@@ -11,10 +11,17 @@ using namespace std;
 
 class Neuron {
   private:
-  	vector<Neuron*> backlinks;
+  	int size;
+  	// same length as size of previous layer (fully connected)
+  	double* weights;
+  	double bias;
   public:
-  	double weight;
-  	Neuron(double weight);
+  	Neuron(int size);
+  	virtual double weighted_sum(double input[]);
+  	virtual double* get_weights();
+  	void print_weights();
+  	virtual double random_weight();
+  	~Neuron();
 };
 
 #endif
