@@ -5,19 +5,17 @@
 #include <time.h>
 #include "neuron.h"
 #include "layer.h"
+#include "neural_network.h"
 
 using namespace std;
 
 int main(int argc, char* argv[]) {
 	srand (time(NULL));
-	double input[5] = {1, 1, 2, 1, 1};
+	double input[3] = {1, 1, 2};
 
-	// TO DO: add to test
-	Layer* l = new Layer(5, 5, "sigmoid");
-	double* res = l->forward(input);
-	cout << "RESULT: " << endl;
-	for (int i = 0; i < 5; i++) {
-		cout << res[i] << endl;
-	}
-	free(res);
+	NeuralNetwork n;
+	n.add_layer(3, 5, "sigmoid");
+	n.add_layer(5, 3, "sigmoid");
+	double* output = n.forward(input);
+
 }

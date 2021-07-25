@@ -17,7 +17,8 @@ class NeuronTest : public ::testing::Test {
 
 class MockNeuron : public Neuron {
 public:
-	MockNeuron(double size): Neuron(size) {};
+	MockNeuron(int size): Neuron(size) {};
+	MockNeuron(int size, double bias): Neuron(size, bias) {};
 	MOCK_METHOD(double*, get_weights, (), (override));
 };
 
@@ -34,7 +35,8 @@ TEST_F(NeuronTest, RandomWeightInitialization) {
 
 TEST_F(NeuronTest, WeightedSum) {
 	int size = 5;
-	MockNeuron neuron(size);
+	double bias = 1.6;
+	MockNeuron neuron(size, bias);
 	// Mock neuron weights as [1, 2, 3, 4, 5]
 	double* weights = new double[size];
 	for (int i = 0; i < size; i++) {
@@ -46,7 +48,7 @@ TEST_F(NeuronTest, WeightedSum) {
 
 	double input[5] = {1, 5, 3, 2, 0.1};
 	double weighted_sum = neuron.weighted_sum(input);
-	EXPECT_EQ(weighted_sum, 28.5);
+	EXPECT_EQ(weighted_sum, 30.1);
 
 	free(weights);
 }

@@ -18,8 +18,9 @@ class Layer {
     string activation;
     int size;
   public:
-  	Layer(int size, int size_previous_layer, string activation);
+  	Layer(int size_previous_layer, int size, string activation);
     double* forward(double input[]);
+    int get_size();
     ~Layer();
 };
 

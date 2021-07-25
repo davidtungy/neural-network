@@ -18,7 +18,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googletest)
 
 include_directories(include)
-add_library(nn_lib src/neuron.cc src/layer.cc)
+add_library(nn_lib src/neuron.cc src/layer.cc src/neural_network.cc)
 
 add_executable(main src/main.cc)
 target_link_libraries(main nn_lib)

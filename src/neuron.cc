@@ -12,6 +12,10 @@ Neuron::Neuron(int size): size(size), bias(0.5) {
 	}
 }
 
+Neuron::Neuron(int size, double bias) : Neuron(size){
+	this->bias = bias;
+}
+
 double Neuron::random_weight() {
 	return ((double) rand()) / RAND_MAX;
 }
