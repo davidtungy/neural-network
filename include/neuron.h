@@ -14,14 +14,11 @@ class Neuron {
   	
   public:
   	Neuron(int size);
-    int size;
-    // same length as size of previous layer (fully connected)
-    double* weights;
-  	virtual double weighted_sum(double input[]);
-  	virtual double* get_weights();
+    vector<double> weights;
+  	virtual double weighted_sum(vector<double>);
+  	virtual vector<double> get_weights();
   	void print_weights();
   	virtual double random_weight();
-  	~Neuron();
 };
 
 #endif

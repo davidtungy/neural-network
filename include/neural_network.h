@@ -14,12 +14,12 @@ using namespace std;
 
 class NeuralNetwork {
   private:
-  	vector<Layer*> layers;
+  	vector<Layer> layers;
   	
   public:
   	NeuralNetwork();
     void add_layer(int size_previous_layer, int size, string activation);
-    double* forward(double* input);
+    vector<double> forward(vector<double> input);
 
 };
 

@@ -11,11 +11,11 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
 	srand (time(NULL));
-	double input[3] = {1, 1, 2};
+	vector<double> input = {1, 1, 2};
 
 	NeuralNetwork n;
 	n.add_layer(3, 2, "sigmoid");
 	n.add_layer(2, 2, "sigmoid");
-	double* output = n.forward(input);
+	vector<double> output = n.forward(input);
 
 }

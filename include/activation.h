@@ -14,7 +14,7 @@ static double sigmoid (double x) {
 }
 
 // Mutator
-static void apply_activation (double* arr, int size, string activation) {
+static vector<double> apply_activation (vector<double> arr, string activation) {
   cout << "Applying activation: " << activation << "..." << endl;
   double (*activation_function) (double);
   if (activation == "linear") {
@@ -22,10 +22,10 @@ static void apply_activation (double* arr, int size, string activation) {
   } else if (activation == "sigmoid") {
     activation_function = sigmoid;
   }
-
-  for (int i = 0; i < size; i++) {
+  for (int i = 0; i < arr.size(); i++) {
     arr[i] = activation_function(arr[i]);
   }
+  return arr;
 }
 
 #endif
