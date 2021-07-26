@@ -14,8 +14,8 @@ int main(int argc, char* argv[]) {
 	double input[3] = {1, 1, 2};
 
 	NeuralNetwork n;
-	n.add_layer(3, 5, "sigmoid");
-	n.add_layer(5, 3, "sigmoid");
+	n.add_layer(3, 2, "sigmoid");
+	n.add_layer(2, 2, "sigmoid");
 	double* output = n.forward(input);
 
 }
