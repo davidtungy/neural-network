@@ -15,6 +15,7 @@ class Neuron {
   public:
   	Neuron(int size);
     vector<double> weights;
+    double net;
   	virtual double weighted_sum(vector<double>);
   	virtual vector<double> get_weights();
   	void print_weights();

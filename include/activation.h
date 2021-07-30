@@ -5,12 +5,18 @@
 #include <iostream>
 #include <cmath>
 
+// TO DO: add support for and test other activation functions (and their partials)
+
 static double linear (double x) {
   return x;
 }
 
 static double sigmoid (double x) {
   return 1 / (1 + exp(-x));
+}
+
+static double sigmoid_partial (double x) {
+  return sigmoid(x) * (1 - sigmoid(x));
 }
 
 // Mutator

@@ -17,8 +17,11 @@ class Layer {
   public:
   	Layer(int size_previous_layer, int size, string activation);
     vector<double> forward(vector<double> input);
-    double bias;
+    vector<double> bias;
     vector<Neuron> neurons;
+    vector<double> prev_in;
+    vector<double> net;
+    vector<double> out;
     string activation;
 };
 
