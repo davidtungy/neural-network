@@ -11,7 +11,7 @@ using namespace std;
 NeuralNetwork::NeuralNetwork() {
 }
 
-void NeuralNetwork::add_layer(int size_previous_layer, int size, string activation) {
+void NeuralNetwork::add_layer(int size_previous_layer, int size, ActivationFunction* activation) {
 	if (this->layers.empty()) {
 		this->layers.push_back(Layer(size_previous_layer, size, activation));
 	} else {
@@ -42,31 +42,29 @@ void NeuralNetwork::backward(vector<double> target) {
 	vector<double> TEMP_CACHE;
 
 	for (int i = layers.size() - 1; i >= 0; i--) {
+		Layer current_layer = layers[i];
+		ActivationFunction* activation = current_layer.activation;
 
 		vector<double> out = layers[i].out;
 		vector<double> net = layers[i].net;
-
 		vector<double> previous_out = layers[i].prev_in;
 
 		
 		for (int j = 0; j < layers[i].neurons.size(); j++) {
 			double cached_element = cache.front();
-			TEMP_CACHE.push_back(cached_element * sigmoid_partial(net[j]));
+			TEMP_CACHE.push_back(cached_element * activation->partial(net[j]));
 
 			for (int k = 0; k < layers[i].neurons[j].weights.size(); k++) {
-				//double cached_elem = cache.front();
 
-				// TO DO: take out hard coding for partials
 				//cout << "First (cached): " << cached_elem << endl;
-				//cout << "Second: sigmoid partial of " << net[j] << " = " << sigmoid_partial(net[j]) << endl;
+				//cout << "Second: sigmoid partial of " << net[j] << " = " << activation->partial(net[j]) << endl;
 				//cout << "Third: out of previous layer neuron " << previous_out[k] << endl;
 				// Update neuron weight
-				double update = cached_element * sigmoid_partial(net[j]) * previous_out[k];
+				double update = cached_element * activation->partial(net[j]) * previous_out[k];
 				layers[i].neurons[j].weights[k] = layers[i].neurons[j].weights[k] - lr * update;
-				//cache.pop();
 			}
 			// Update bias weight
-			layers[i].bias[j] = layers[i].bias[j] - lr * cached_element * sigmoid_partial(out[j]);
+			layers[i].bias[j] = layers[i].bias[j] - lr * cached_element * activation->partial(out[j]);
 			cache.pop();
 		}
 

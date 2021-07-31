@@ -9,6 +9,7 @@
 
 #include "neuron.h"
 #include "layer.h"
+#include "activation.h"
 
 using namespace std;
 
@@ -18,7 +19,7 @@ class NeuralNetwork {
   	
   public:
   	NeuralNetwork();
-    void add_layer(int size_previous_layer, int size, string activation);
+    void add_layer(int size_previous_layer, int size, ActivationFunction* activation);
     vector<double> forward(vector<double> input);
     void backward(vector<double> target);
     void print_result();

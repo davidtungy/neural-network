@@ -23,7 +23,6 @@ add_library(nn_lib src/neuron.cc src/layer.cc src/neural_network.cc)
 add_executable(main src/main.cc)
 target_link_libraries(main nn_lib)
 
-
 add_executable(neuron_test tests/neuron_test.cc)
 target_link_libraries(neuron_test nn_lib gtest_main gmock_main)
 

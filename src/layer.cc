@@ -10,7 +10,7 @@
 using namespace std;
 
 
-Layer::Layer(int size_previous_layer, int size, string activation): activation(activation){
+Layer::Layer(int size_previous_layer, int size, ActivationFunction* activation): activation(activation){
 	for(int i = 0; i < size; i++) {
 		neurons.push_back(Neuron(size_previous_layer));
 		// TO DO: randomize bias
@@ -26,7 +26,7 @@ vector<double> Layer::forward(vector<double> input) {
 		neurons[i].net = result[i];
 	}
 	this->net = result;
-	result = apply_activation(result, activation);
+	result = activation->apply_activation(result);
 	this->out = result;
 	return result;
 }
