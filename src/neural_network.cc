@@ -29,90 +29,64 @@ vector<double> NeuralNetwork::forward(vector<double> input) {
 }
 
 // Rough working of backprop
-void NeuralNetwork::backward(vector<double> target, vector<double> input) {
+void NeuralNetwork::backward(vector<double> target) {
 	// TO DO: update weights AFTER updating the cache (use original weights in all scenarios)
-	double lr = 0.2;
+	double lr = 0.05;
 
 	queue<double> cache;
 
-	cout << "TARGET: " << endl;
 	for(int i = 0; i < target.size(); i++) {
-		cout << target[i] << " ";
-		// TO DO: take out the hard coding here
-		cache.push(-(target[i] - layers[layers.size()-1].out[i]));
 		cache.push(-(target[i] - layers[layers.size()-1].out[i]));
 	}
-	cout << endl;
 
 	vector<double> TEMP_CACHE;
 
 	for (int i = layers.size() - 1; i >= 0; i--) {
+
 		vector<double> out = layers[i].out;
 		vector<double> net = layers[i].net;
-		/*
-		cout << "LAYER " << i << " contains " << layers[i].neurons.size() << " neurons" << endl;
 
-		cout << "Layer " << i << " out: ";
-		for (int outs = 0; outs < out.size(); outs++) {
-				cout << out[outs] << " ";
-			}
-		cout << endl;
-		*/
 		vector<double> previous_out = layers[i].prev_in;
 
 		
 		for (int j = 0; j < layers[i].neurons.size(); j++) {
-			/*
-			cout << "Layer " << i << " Neuron " << j << " weights: ";
-			for (int k = 0; k < layers[i].neurons[j].weights.size(); k++) {
-				cout << layers[i].neurons[j].weights[k] << " ";
-			}
-			cout << endl;
-			cout << "Layer " << i << " Neuron " << j << " net: " << layers[i].neurons[j].net << endl;
-			*/
-			cout << "Adding to temp cache: " << cache.front() << " * " << sigmoid_partial(net[j]) << endl;
-			TEMP_CACHE.push_back(cache.front() * sigmoid_partial(net[j]));
+			double cached_element = cache.front();
+			TEMP_CACHE.push_back(cached_element * sigmoid_partial(net[j]));
 
 			for (int k = 0; k < layers[i].neurons[j].weights.size(); k++) {
-				double cached_elem = cache.front();
-				//cout << "First: " << "- (" << cached_elem << " - " << out[j] << ")" << " = ";
-				//cout << -(cached_elem - out[j]) << endl;
+				//double cached_elem = cache.front();
 
 				// TO DO: take out hard coding for partials
-				cout << "First (cached): " << cached_elem << endl;
-				cout << "Second: sigmoid partial of " << net[j] << " = " << sigmoid_partial(net[j]) << endl;
-				cout << "Third: out of previous layer neuron " << previous_out[k] << endl;
-				// UPDATE neuron weight
-				double update = cached_elem * sigmoid_partial(net[j]) * previous_out[k];
-				cout << "Update value is: " << update << endl;
-				cout << "UPDATING " << layers[i].neurons[j].weights[k] << " to ";
+				//cout << "First (cached): " << cached_elem << endl;
+				//cout << "Second: sigmoid partial of " << net[j] << " = " << sigmoid_partial(net[j]) << endl;
+				//cout << "Third: out of previous layer neuron " << previous_out[k] << endl;
+				// Update neuron weight
+				double update = cached_element * sigmoid_partial(net[j]) * previous_out[k];
 				layers[i].neurons[j].weights[k] = layers[i].neurons[j].weights[k] - lr * update;
-				cout << layers[i].neurons[j].weights[k] << endl;
-				cache.pop();
+				//cache.pop();
 			}
-			layers[i].bias[j] = layers[i].bias[j] - lr * cache.front() * sigmoid_partial(out[j]);
+			// Update bias weight
+			layers[i].bias[j] = layers[i].bias[j] - lr * cached_element * sigmoid_partial(out[j]);
+			cache.pop();
 		}
-		cout << " DONE UPDATING LAYER " << i << endl;
-		cout << "-------------------" << endl;
-		cout << "TEMP_CACHE: ";
-		for (int l = 0; l < TEMP_CACHE.size(); l++) {
-			cout << TEMP_CACHE[l] << " ";
-		}
-		cout << endl;
+
 		if (i > 0) {
 			for (int j = 0; j < layers[i].prev_in.size(); j++) {
 				double sum = 0;
 				for (int l = 0; l < layers[i].neurons.size(); l++) {
-					cout << layers[i].neurons[l].weights[j] << " * " << TEMP_CACHE[l] << " + ";
 					sum += layers[i].neurons[l].weights[j] * TEMP_CACHE[l];
 				}
-				cout << " = " << sum << endl;
-				for (int l = 0; l < layers[i-1].prev_in.size(); l++) {
-					cache.push(sum);
-				}
+				cache.push(sum);
 			}
 			TEMP_CACHE.clear();
 		}
 
 	}
+}
+
+void NeuralNetwork::print_result() {
+	for (int i = 0; i < layers[layers.size()-1].out.size(); i++) {
+		cout << layers[layers.size()-1].out[i] << " ";
+	}
+	cout << endl;
 }

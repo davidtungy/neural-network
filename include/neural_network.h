@@ -20,7 +20,8 @@ class NeuralNetwork {
   	NeuralNetwork();
     void add_layer(int size_previous_layer, int size, string activation);
     vector<double> forward(vector<double> input);
-    void backward(vector<double> target, vector<double> input);
+    void backward(vector<double> target);
+    void print_result();
 };
 
 #endif

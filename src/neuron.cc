@@ -23,7 +23,6 @@ double Neuron::weighted_sum(vector<double> input) {
 	vector<double> current_weights = get_weights();
 	double sum = 0.0;
 	for (int i = 0; i < current_weights.size(); i++) {
-		cout << input[i] << "*" << current_weights[i] << " + ";
 		sum += input[i] * current_weights[i];
 	}
 	return sum;

@@ -21,7 +21,6 @@ static double sigmoid_partial (double x) {
 
 // Mutator
 static vector<double> apply_activation (vector<double> arr, string activation) {
-  cout << "Applying activation: " << activation << "..." << endl;
   double (*activation_function) (double);
   if (activation == "linear") {
     activation_function = linear;
