@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <assert.h>
+#include <limits>
 #include <queue>
 #include "activation.h"
 #include "loss.h"
@@ -88,9 +89,11 @@ void NeuralNetwork::backward(vector<double> actual) {
 }
 
 void NeuralNetwork::train(vector<vector<double>> X_train, vector<vector<double>> y_train) {
-	for (int epoch = 0; epoch < 20000; epoch++) {
-		cout << "------------------------" << endl;
-		cout << "Training epoch " << epoch << endl;
+
+	double min_loss = std::numeric_limits<double>::max();
+	int count = 0;
+
+	for (int epoch = 0; epoch < 500; epoch++) {
 
 		// Track cumulative loss across entire epoch
 		double cumulative_loss = 0;
@@ -98,25 +101,38 @@ void NeuralNetwork::train(vector<vector<double>> X_train, vector<vector<double>>
 		// iterate across all training examples
 		for (int i = 0; i < X_train.size(); i++) {
 			vector<double> output = forward(X_train[i]);
-			/*
-			cout << "Output after forward: ";
-			for (int j = 0; j < output.size(); j++) {
-				cout << output[j] << " ";
-			}
-			cout << endl;
-			cout << "Expected output: ";
-			for (int j = 0; j < y_train[i].size(); j++) {
-				cout << y_train[i][j] << " ";
-			}
-			cout << endl;
-			*/
+
 			cumulative_loss += loss->calculate_loss(y_train[i], output);
 
 			backward(y_train[i]);
 		}
-		cout << "Loss: " << cumulative_loss << endl;
-		// TO DO: implement early stopping here if desired
+
+		if (epoch % 10 == 0) {
+			cout << "Epoch " << epoch << " Loss: " << cumulative_loss << " Average Loss: " << cumulative_loss/X_train.size() << endl;
+		}
+
+		// Early stopping (exit loop if loss doesn't decrease for 10 iterations in a row)
+		
+		if (cumulative_loss < min_loss) {
+			count = 0;
+			min_loss = cumulative_loss;
+		} else {
+			count++;
+			if (count == 20) {
+				break;
+			}
+		}
+
+		
 	}
+}
+void NeuralNetwork::validate(vector<vector<double>> X_val, vector<vector<double>> y_val) {
+	double cumulative_loss = 0;
+	for (int i = 0; i < X_val.size(); i++) {
+		vector<double> output = forward(X_val[i]);
+		cumulative_loss += loss->calculate_loss(y_val[i], output);
+	}
+	cout << "Validation Loss: " << cumulative_loss << " Average Loss: " << cumulative_loss/X_val.size() << endl;
 }
 
 void NeuralNetwork::print_result() {
