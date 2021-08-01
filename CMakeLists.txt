@@ -9,6 +9,7 @@ enable_testing()
 
 include(GoogleTest)
 
+# Include Google Testing framework
 include(FetchContent)
 FetchContent_Declare(
   googletest

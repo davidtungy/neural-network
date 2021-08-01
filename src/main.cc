@@ -20,6 +20,7 @@ int main(int argc, char* argv[]) {
 	// Define a nonlinear multivariable function:
 	// (x1, x2, x3, x4) => (y1, y2), where:
 	// y1 = x3 + (1.8 * x1) - x2 + x4
+	// y2 = x1 + x4 * x2
 
 	// Generate 500 training examples in the space:
 	// x1: [0, 2]
@@ -46,9 +47,9 @@ int main(int argc, char* argv[]) {
 		double x3 = x3_distr(eng);
 		double x4 = x4_distr(eng);
 		double y1 = x3 + (1.8 * x1) - x2 + x4;
-		double y2 = x2 - x4 + 0.31;
+		double y2 = x1 + x4 * x2;
 		std::vector<double> X = {x1, x2, x3, x4};
-		std::vector<double> y = {y1};
+		std::vector<double> y = {y1, y2};
 		if (i < 500) {
 			X_train.push_back(X);
 			y_train.push_back(y);
@@ -61,7 +62,7 @@ int main(int argc, char* argv[]) {
 	NeuralNetwork n;
 	n.add_layer(4, 2, new Sigmoid());
 	n.add_layer(2, 2, new Sigmoid());
-	n.add_layer(2, 1, new LReLU());
+	n.add_layer(2, 2, new LReLU());
 	n.set_loss(new MSE());
 
 	n.train(X_train, y_train);

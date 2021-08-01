@@ -1,5 +1,6 @@
 #include "neural_network.h"
 
+#include <fstream>
 #include <iostream>
 #include <limits>
 #include <queue>
@@ -120,7 +121,6 @@ void NeuralNetwork::train(std::vector<std::vector<double>> X_train, std::vector<
 				break;
 			}
 		}
-
 		
 	}
 }
@@ -128,6 +128,7 @@ void NeuralNetwork::validate(std::vector<std::vector<double>> X_val, std::vector
 	double cumulative_loss = 0;
 	for (int i = 0; i < X_val.size(); i++) {
 		std::vector<double> output = forward(X_val[i]);
+		
 		for (int j = 0; j < output.size(); j++) {
 			std::cout << output[j] << " ";
 		}
