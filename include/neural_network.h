@@ -1,34 +1,25 @@
 #ifndef NeuralNetwork_H
 #define NeuralNetwork_H
 
-
-#include <cstdlib>
-#include <iostream>
 #include <vector>
-#include <string>
 
-#include "neuron.h"
-#include "layer.h"
 #include "activation.h"
+#include "layer.h"
 #include "loss.h"
-
-using namespace std;
 
 class NeuralNetwork {
   private:
-  	vector<Layer> layers;
-  	
+  	std::vector<Layer> layers;
+  	Loss* loss;
   	
   public:
   	NeuralNetwork();
-  	Loss* loss;
     void add_layer(int size_previous_layer, int size, ActivationFunction* activation);
     void set_loss(Loss* loss);
-    vector<double> forward(vector<double> input);
-    void backward(vector<double> actual);
-    void print_result();
-    void train(vector<vector<double>> X_train, vector<vector<double>> y_train);
-    void validate(vector<vector<double>> X_val, vector<vector<double>> y_val);
+    std::vector<double> forward(std::vector<double> input);
+    void backward(std::vector<double> actual);
+    void train(std::vector<std::vector<double>> X_train, std::vector<std::vector<double>> y_train);
+    void validate(std::vector<std::vector<double>> X_val, std::vector<std::vector<double>> y_val);
 };
 
 #endif

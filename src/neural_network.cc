@@ -1,14 +1,13 @@
 #include "neural_network.h"
 
 #include <iostream>
-#include <assert.h>
 #include <limits>
 #include <queue>
+
+#include <assert.h>
+
 #include "activation.h"
 #include "loss.h"
-
-using namespace std;
-
 
 NeuralNetwork::NeuralNetwork() {
 }
@@ -26,34 +25,33 @@ void NeuralNetwork::set_loss(Loss* loss) {
 	this->loss = loss;
 }
 
-vector<double> NeuralNetwork::forward(vector<double> input) {
-	vector<double> layer_output = input;
+std::vector<double> NeuralNetwork::forward(std::vector<double> input) {
+	std::vector<double> layer_output = input;
 	for(int i = 0; i < layers.size(); i++) {
 		layer_output = layers[i].forward(layer_output);
 	}
 	return layer_output;
 }
 
-// Rough working of backprop
-void NeuralNetwork::backward(vector<double> actual) {
+void NeuralNetwork::backward(std::vector<double> actual) {
 	// TO DO: update weights AFTER updating the cache (use original weights in all scenarios)
 	double lr = 0.05;
 
-	queue<double> cache;
+	std::queue<double> cache;
 
-	vector<double> output = layers[layers.size()-1].out;
+	std::vector<double> output = layers[layers.size()-1].out;
 
 	cache = loss->partial(actual, output);
 
-	vector<double> TEMP_CACHE;
+	std::vector<double> TEMP_CACHE;
 
 	for (int i = layers.size() - 1; i >= 0; i--) {
 		Layer current_layer = layers[i];
 		ActivationFunction* activation = current_layer.activation;
 
-		vector<double> out = layers[i].out;
-		vector<double> net = layers[i].net;
-		vector<double> previous_out = layers[i].prev_in;
+		std::vector<double> out = layers[i].out;
+		std::vector<double> net = layers[i].net;
+		std::vector<double> previous_out = layers[i].prev_in;
 
 		
 		for (int j = 0; j < layers[i].neurons.size(); j++) {
@@ -88,7 +86,7 @@ void NeuralNetwork::backward(vector<double> actual) {
 	}
 }
 
-void NeuralNetwork::train(vector<vector<double>> X_train, vector<vector<double>> y_train) {
+void NeuralNetwork::train(std::vector<std::vector<double>> X_train, std::vector<std::vector<double>> y_train) {
 
 	double min_loss = std::numeric_limits<double>::max();
 	int count = 0;
@@ -100,7 +98,7 @@ void NeuralNetwork::train(vector<vector<double>> X_train, vector<vector<double>>
 
 		// iterate across all training examples
 		for (int i = 0; i < X_train.size(); i++) {
-			vector<double> output = forward(X_train[i]);
+			std::vector<double> output = forward(X_train[i]);
 
 			cumulative_loss += loss->calculate_loss(y_train[i], output);
 
@@ -108,10 +106,10 @@ void NeuralNetwork::train(vector<vector<double>> X_train, vector<vector<double>>
 		}
 
 		if (epoch % 10 == 0) {
-			cout << "Epoch " << epoch << " Loss: " << cumulative_loss << " Average Loss: " << cumulative_loss/X_train.size() << endl;
+			std::cout << "Epoch " << epoch << " Loss: " << cumulative_loss << " Average Loss: " << cumulative_loss/X_train.size() << std::endl;
 		}
 
-		// Early stopping (exit loop if loss doesn't decrease for 10 iterations in a row)
+		// Early stopping (exit loop if loss doesn't decrease for 20 iterations in a row)
 		
 		if (cumulative_loss < min_loss) {
 			count = 0;
@@ -126,18 +124,19 @@ void NeuralNetwork::train(vector<vector<double>> X_train, vector<vector<double>>
 		
 	}
 }
-void NeuralNetwork::validate(vector<vector<double>> X_val, vector<vector<double>> y_val) {
+void NeuralNetwork::validate(std::vector<std::vector<double>> X_val, std::vector<std::vector<double>> y_val) {
 	double cumulative_loss = 0;
 	for (int i = 0; i < X_val.size(); i++) {
-		vector<double> output = forward(X_val[i]);
+		std::vector<double> output = forward(X_val[i]);
+		for (int j = 0; j < output.size(); j++) {
+			std::cout << output[j] << " ";
+		}
+		std::cout << std::endl;
+		for (int j = 0; j < y_val[i].size(); j++) {
+			std::cout << y_val[i][j] << " ";
+		}
+		std::cout << std::endl;
 		cumulative_loss += loss->calculate_loss(y_val[i], output);
 	}
-	cout << "Validation Loss: " << cumulative_loss << " Average Loss: " << cumulative_loss/X_val.size() << endl;
-}
-
-void NeuralNetwork::print_result() {
-	for (int i = 0; i < layers[layers.size()-1].out.size(); i++) {
-		cout << layers[layers.size()-1].out[i] << " ";
-	}
-	cout << endl;
+	std::cout << "Validation Loss: " << cumulative_loss << " Average Loss: " << cumulative_loss/X_val.size() << std::endl;
 }

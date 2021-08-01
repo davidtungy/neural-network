@@ -1,13 +1,6 @@
 #include "activation.h"
 
-
-#include <iostream>
-#include <string>
 #include <cmath>
-
-
-using namespace std;
-
 
 class Sigmoid : public ActivationFunction {
 public:

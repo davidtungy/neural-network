@@ -1,13 +1,7 @@
 #include "layer.h"
 
-
-#include <iostream>
-#include <string>
-
-#include "neuron.h"
 #include "activation.h"
-
-using namespace std;
+#include "neuron.h"
 
 
 Layer::Layer(int size_previous_layer, int size, ActivationFunction* activation): activation(activation){
@@ -18,9 +12,9 @@ Layer::Layer(int size_previous_layer, int size, ActivationFunction* activation):
 	}
 }
 
-vector<double> Layer::forward(vector<double> input) {
+std::vector<double> Layer::forward(std::vector<double> input) {
 	this->prev_in = input;
-	vector<double> result;
+	std::vector<double> result;
 	for (int i = 0; i < neurons.size(); i++) {
 		result.push_back(neurons[i].weighted_sum(input) + bias[i]);
 		neurons[i].net = result[i];

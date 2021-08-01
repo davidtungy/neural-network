@@ -1,18 +1,11 @@
 #include "loss.h"
 
-
-#include <iostream>
-#include <string>
 #include <cmath>
 #include <queue>
 
-
-using namespace std;
-
-
 class MSE : public Loss {
 public:
-	double calculate_loss (vector<double> actual, vector<double> predicted) {
+	double calculate_loss (std::vector<double> actual, std::vector<double> predicted) {
 		double sum = 0.0;
 		for (int i = 0; i < actual.size(); i++) {
 			sum += pow(actual[i] - predicted[i], 2);
@@ -20,8 +13,8 @@ public:
 		return sum;
 	}
 
-	queue<double> partial (vector<double> actual, vector<double> predicted) {
-		queue<double> q;
+	std::queue<double> partial (std::vector<double> actual, std::vector<double> predicted) {
+		std::queue<double> q;
 		for (int i = 0; i < actual.size(); i++) {
 			q.push(-(actual[i] - predicted[i]));
 		}
