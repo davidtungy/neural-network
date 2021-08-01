@@ -27,7 +27,7 @@ class NeuralNetwork {
     vector<double> forward(vector<double> input);
     void backward(vector<double> actual);
     void print_result();
-    //void train(vector<vector<double>> X_train, vector<vector<double>> y_train);
+    void train(vector<vector<double>> X_train, vector<vector<double>> y_train);
 };
 
 #endif

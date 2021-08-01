@@ -40,11 +40,6 @@ void NeuralNetwork::backward(vector<double> actual) {
 
 	queue<double> cache;
 
-	/*
-	for(int i = 0; i < target.size(); i++) {
-		cache.push(-(target[i] - layers[layers.size()-1].out[i]));
-	}*/
-
 	vector<double> output = layers[layers.size()-1].out;
 
 	cache = loss->partial(actual, output);
@@ -66,7 +61,7 @@ void NeuralNetwork::backward(vector<double> actual) {
 
 			for (int k = 0; k < layers[i].neurons[j].weights.size(); k++) {
 
-				//cout << "First (cached): " << cached_elem << endl;
+				//cout << "First (cached): " << cached_element << endl;
 				//cout << "Second: sigmoid partial of " << net[j] << " = " << activation->partial(net[j]) << endl;
 				//cout << "Third: out of previous layer neuron " << previous_out[k] << endl;
 				// Update neuron weight
@@ -89,6 +84,38 @@ void NeuralNetwork::backward(vector<double> actual) {
 			TEMP_CACHE.clear();
 		}
 
+	}
+}
+
+void NeuralNetwork::train(vector<vector<double>> X_train, vector<vector<double>> y_train) {
+	for (int epoch = 0; epoch < 20000; epoch++) {
+		cout << "------------------------" << endl;
+		cout << "Training epoch " << epoch << endl;
+
+		// Track cumulative loss across entire epoch
+		double cumulative_loss = 0;
+
+		// iterate across all training examples
+		for (int i = 0; i < X_train.size(); i++) {
+			vector<double> output = forward(X_train[i]);
+			/*
+			cout << "Output after forward: ";
+			for (int j = 0; j < output.size(); j++) {
+				cout << output[j] << " ";
+			}
+			cout << endl;
+			cout << "Expected output: ";
+			for (int j = 0; j < y_train[i].size(); j++) {
+				cout << y_train[i][j] << " ";
+			}
+			cout << endl;
+			*/
+			cumulative_loss += loss->calculate_loss(y_train[i], output);
+
+			backward(y_train[i]);
+		}
+		cout << "Loss: " << cumulative_loss << endl;
+		// TO DO: implement early stopping here if desired
 	}
 }
 
