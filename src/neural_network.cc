@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <queue>
 #include "activation.h"
+#include "loss.h"
 
 using namespace std;
 
@@ -20,6 +21,10 @@ void NeuralNetwork::add_layer(int size_previous_layer, int size, ActivationFunct
 	}
 }
 
+void NeuralNetwork::set_loss(Loss* loss) {
+	this->loss = loss;
+}
+
 vector<double> NeuralNetwork::forward(vector<double> input) {
 	vector<double> layer_output = input;
 	for(int i = 0; i < layers.size(); i++) {
@@ -29,15 +34,20 @@ vector<double> NeuralNetwork::forward(vector<double> input) {
 }
 
 // Rough working of backprop
-void NeuralNetwork::backward(vector<double> target) {
+void NeuralNetwork::backward(vector<double> actual) {
 	// TO DO: update weights AFTER updating the cache (use original weights in all scenarios)
 	double lr = 0.05;
 
 	queue<double> cache;
 
+	/*
 	for(int i = 0; i < target.size(); i++) {
 		cache.push(-(target[i] - layers[layers.size()-1].out[i]));
-	}
+	}*/
+
+	vector<double> output = layers[layers.size()-1].out;
+
+	cache = loss->partial(actual, output);
 
 	vector<double> TEMP_CACHE;
 
